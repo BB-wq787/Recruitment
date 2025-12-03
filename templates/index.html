@@ -58,8 +58,10 @@
         .splash-logo {
             max-width: 230px;
             height: auto;
-            margin-bottom: 14px;
+            margin-bottom: 6px;
             filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65));
+            /* move logo higher to clear background face */
+            transform: translateY(-42px);
         }
         .splash-title {
             font-size: 1.1rem; /* smaller than logo */
@@ -67,6 +69,9 @@
             text-transform: none; /* keep each word capitalized as typed */
             color: rgba(245, 245, 245, 0.96);
             text-align: center;
+            /* lift title further and increase gap from logo */
+            margin-top: 32px;
+            transform: translateY(-76px);
         }
         /* Main page content wrapper: initially hidden, then fade in after splash */
         .page-shell {
