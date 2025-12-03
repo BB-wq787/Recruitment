@@ -49,14 +49,14 @@ def register():
     password = request.form.get("password", "").strip()
 
     if not name or not email or not password:
-        flash("姓名、郵箱和密碼為必填項", "danger")
-        return redirect(url_for("index") + "#register")
+        flash("Name, email, and password are required.", "danger")
+        return redirect(url_for("index"))
 
     try:
         age_int = int(age) if age else None
     except ValueError:
-        flash("年齡必須為數字", "danger")
-        return redirect(url_for("index") + "#register")
+        flash("Age must be a number.", "danger")
+        return redirect(url_for("index"))
 
     conn = get_db_connection()
     cur = conn.cursor()
@@ -69,9 +69,9 @@ def register():
             (name, gender, age_int, email, phone, password),
         )
         conn.commit()
-        flash("賬號創建成功，請使用姓名或郵箱登入", "success")
+        flash("Account created. You can now sign in using your name or email.", "success")
     except sqlite3.IntegrityError:
-        flash("該郵箱已被註冊，請使用其他郵箱或直接登入", "danger")
+        flash("This email is already registered. Please sign in or use another email.", "danger")
     finally:
         conn.close()
 
@@ -84,8 +84,8 @@ def login():
     password = request.form.get("password", "").strip()
 
     if not account or not password:
-        flash("請輸入賬號和密碼", "danger")
-        return redirect(url_for("index") + "#login")
+        flash("Please enter account and password.", "danger")
+        return redirect(url_for("index"))
 
     conn = get_db_connection()
     cur = conn.cursor()
@@ -101,11 +101,11 @@ def login():
 
     if user:
         session["user_name"] = user["name"]
-        flash(f"歡迎，{user['name']}！登入成功。", "success")
+        flash(f"Welcome, {user['name']}! Signed in successfully.", "success")
         return redirect(url_for("welcome"))
     else:
-        flash("賬號或密碼錯誤", "danger")
-        return redirect(url_for("index") + "#login")
+        flash("Incorrect account or password.", "danger")
+        return redirect(url_for("index"))
 
 
 @app.route("/welcome", methods=["GET"])
@@ -122,8 +122,8 @@ def reset_password():
     new_password = request.form.get("new_password", "").strip()
 
     if not account or not new_password:
-        flash("請輸入賬號和新密碼", "danger")
-        return redirect(url_for("index") + "#reset")
+        flash("Please enter account and new password.", "danger")
+        return redirect(url_for("index"))
 
     conn = get_db_connection()
     cur = conn.cursor()
@@ -140,11 +140,11 @@ def reset_password():
     conn.close()
 
     if updated:
-        flash("密碼重設成功，請使用新密碼登入", "success")
+        flash("Password has been reset. Please sign in with your new password.", "success")
     else:
-        flash("未找到該賬號，請確認姓名或郵箱是否正確", "danger")
+        flash("Account not found. Please check the name or email.", "danger")
 
-    return redirect(url_for("index") + "#login")
+    return redirect(url_for("index"))
 
 
 if __name__ == "__main__":
