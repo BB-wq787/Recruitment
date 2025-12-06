@@ -85,27 +85,36 @@ def login():
 
     if not account or not password:
         flash("Please enter account and password.", "danger")
-        return redirect(url_for("index"))
+        return redirect(url_for("index") + "?no_splash=1")
 
     conn = get_db_connection()
     cur = conn.cursor()
+    # 先檢查賬號是否存在
     cur.execute(
         """
         SELECT * FROM users
-        WHERE (name = ? OR email = ?) AND password = ?
+        WHERE name = ? OR email = ?
         """,
-        (account, account, password),
+        (account, account),
     )
     user = cur.fetchone()
+    
+    if not user:
+        conn.close()
+        flash("Account not found. Please check your account name or email.", "danger")
+        return redirect(url_for("index") + "?no_splash=1")
+    
+    # 賬號存在，檢查密碼
+    if user["password"] != password:
+        conn.close()
+        flash("Incorrect password. Please try again.", "danger")
+        return redirect(url_for("index") + "?no_splash=1")
+    
+    # 登錄成功
+    session["user_name"] = user["name"]
+    flash(f"Welcome, {user['name']}! Signed in successfully.", "success")
     conn.close()
-
-    if user:
-        session["user_name"] = user["name"]
-        flash(f"Welcome, {user['name']}! Signed in successfully.", "success")
-        return redirect(url_for("welcome"))
-    else:
-        flash("Incorrect account or password.", "danger")
-        return redirect(url_for("index"))
+    return redirect(url_for("welcome"))
 
 
 @app.route("/welcome", methods=["GET"])

@@ -8,6 +8,11 @@
     <style>
         body {
             background-color: #f5f5f5;
+            background-image: url("{{ url_for('static', filename='bk.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
         }
         .logo {
             max-width: 200px;
@@ -61,7 +66,17 @@
             margin-bottom: 6px;
             filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65));
             /* move logo higher to clear background face */
-            transform: translateY(-42px);
+            transform: translateY(-70px);
+        }
+        .splash-subtitle {
+            font-size: 1.3rem;
+            letter-spacing: 0.15em;
+            text-transform: none; /* only first letter of each word capitalized */
+            color: rgba(245, 245, 245, 0.95);
+            text-align: center;
+            margin-top: 12px;
+            transform: translateY(-70px);
+            font-weight: 500;
         }
         .splash-title {
             font-size: 1.1rem; /* smaller than logo */
@@ -70,8 +85,8 @@
             color: rgba(245, 245, 245, 0.96);
             text-align: center;
             /* lift title further and increase gap from logo */
-            margin-top: 32px;
-            transform: translateY(-76px);
+            margin-top: 20px;
+            transform: translateY(-85px);
         }
         /* Main page content wrapper: initially hidden, then fade in after splash */
         .page-shell {
@@ -91,6 +106,9 @@
 <!-- Opening splash animation -->
 <div class="splash-overlay">
     <img src="{{ url_for('static', filename='dksh_logo.png') }}" alt="DKSH Logo" class="splash-logo">
+    <div class="splash-subtitle">
+        Supply Chain
+    </div>
     <div class="splash-title">
         2026 Management Associate Program
     </div>
@@ -101,9 +119,21 @@
             <div class="col-12 text-center mb-4">
                 <!-- DKSH logo file: static/dksh_logo.png -->
                 <img src="{{ url_for('static', filename='dksh_logo.png') }}" alt="DKSH Logo" class="logo mb-3">
-                <h2>2026 Management Associate Program</h2>
+                <h2 class="mb-2" style="font-size: 1.3rem;">Supply Chain</h2>
+                <h2 style="font-size: 1.3rem;">2026 Management Associate Program</h2>
             </div>
             <div class="col-12 col-md-8 col-lg-6">
+                <!-- Flash messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
                 <div class="card">
                     <div class="card-body">
                         <!-- Login form: default view -->
@@ -218,6 +248,14 @@
         const overlay = document.querySelector('.splash-overlay');
         const pageShell = document.querySelector('.page-shell');
         if (!overlay || !pageShell) return;
+
+        // 檢查 URL 參數，如果是有 no_splash 參數（例如登入失敗後重定向），跳過開屏動畫
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('no_splash') === '1') {
+            overlay.classList.add('hidden');
+            pageShell.classList.add('visible');
+            return;
+        }
 
         // 預載背景圖片，載入完成後再切到帶圖片的背景，避免白屏或閃爍
         const bgUrl = "{{ url_for('static', filename='MT.jpg') }}";
