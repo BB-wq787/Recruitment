@@ -21,21 +21,23 @@
             align-items: center;
             justify-content: center;
             min-height: 80vh;
+            position: relative;
         }
         .user-avatar {
-            width: 120px;
-            height: 120px;
+            width: 88px;
+            height: 88px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            /* 與 action-box 色系協調：使用較清爽的藍色漸層 */
+            background: linear-gradient(135deg, #5AA3E8 0%, #3B82F6 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 3rem;
-            font-weight: bold;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            border: 4px solid rgba(255, 255, 255, 0.3);
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+            border: 3px solid rgba(255, 255, 255, 0.35);
         }
         .welcome-text {
             color: white;
@@ -53,74 +55,103 @@
             flex-wrap: wrap;
         }
         .action-box {
-            flex: 1;
-            min-width: 150px;
-            max-width: 200px;
-            aspect-ratio: 1;
-            border-radius: 16px;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
+            gap: 8px;
+            height: 48px;
+            min-width: 140px;
+            padding: 0 14px;
+            border-radius: 28px;
             cursor: pointer;
             text-decoration: none;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            /* 外圈浅蓝 */
-            border: 2px solid #B3D9FF;
-            /* 内圈浅蓝 */
-            background: linear-gradient(135deg, #6BB6FF 0%, #5AA3E8 100%);
-            box-shadow: 
-                0 0 0 6px #B3D9FF,
-                0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            /* 更飽和的漸層（方案 B） */
+            background: linear-gradient(135deg, #3B82F6 0%, #0EA5E9 100%);
+            color: #fff;
+            border: none;
+            box-shadow: 0 8px 20px rgba(14, 165, 233, 0.18);
         }
         .action-box:hover {
             transform: translateY(-5px);
             box-shadow: 
-                0 0 0 6px #B3D9FF,
-                0 8px 25px rgba(0, 0, 0, 0.3);
+                0 8px 26px rgba(14, 165, 233, 0.22),
+                0 10px 30px rgba(0,0,0,0.18);
         }
         .action-box-text {
             color: white;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             text-align: center;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.03em;
+        }
+        .action-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.12rem;
+            line-height: 1;
         }
         .logout-btn {
             margin-top: 2.5rem;
-            padding: 0.75rem 2rem;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            border-radius: 25px;
-            color: white;
-            font-size: 1rem;
-            font-weight: 500;
+            padding: 0.65rem 1.6rem;
+            /* 淺色反白：白色近不透明背景 + 品牌藍色描邊，深色文字 */
+            background: rgba(255, 255, 255, 0.98);
+            color: #0b1220;
+            border: 1.5px solid rgba(59,130,246,0.18);
+            border-radius: 22px;
+            font-size: 0.98rem;
+            font-weight: 600;
             text-decoration: none;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            transition: all 0.18s ease;
+            box-shadow: 0 6px 18px rgba(2,6,23,0.08);
+            position: relative;
+            z-index: 70; /* 確保在 mobile 固定底部 pill bar 之上 */
         }
         .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.6);
-            color: white;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 24px rgba(2,6,23,0.12);
+            background: rgba(255,255,255,1);
+            border-color: rgba(59,130,246,0.26);
         }
         @media (max-width: 768px) {
             .action-boxes {
-                flex-direction: column;
+                /* mobile: bottom fixed pill bar */
+                position: fixed;
+                bottom: 18px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: calc(100% - 36px);
+                max-width: 420px;
+                padding: 8px;
+                justify-content: space-between;
                 align-items: center;
+                background: rgba(0,0,0,0.28);
+                border-radius: 36px;
+                box-shadow: 0 12px 30px rgba(2,6,23,0.45);
+                z-index: 60;
             }
             .action-box {
-                width: 100%;
-                max-width: 220px;
+                flex: 1 1 48%;
+                margin: 0 6px;
+                min-width: 0;
+                height: 48px;
+                padding: 0 12px;
+                border-radius: 28px;
             }
             .welcome-text {
                 font-size: 1.5rem;
             }
             .user-avatar {
-                width: 100px;
-                height: 100px;
-                font-size: 2.5rem;
+                width: 76px;
+                height: 76px;
+                font-size: 2rem;
+            }
+            /* mobile: keep logout as normal button below content (no top-left override) */
+            .logout-btn {
+                /* 在有固定底部 action bar 時，增加底部空間以避免被遮蓋 */
+                margin-bottom: 92px;
+                z-index: 72;
             }
         }
     </style>
@@ -138,11 +169,13 @@
     </div>
     
     <!-- 两个可点击框框 -->
-    <div class="action-boxes">
-        <a href="{{ url_for('estamp') }}" class="action-box">
+    <div class="action-boxes" role="navigation" aria-label="Primary actions">
+        <a href="{{ url_for('estamp') }}" class="action-box" aria-label="E-Stamp">
+            <span class="action-icon">🏷️</span>
             <div class="action-box-text">E-Stamp</div>
         </a>
-        <a href="#" class="action-box">
+        <a href="#" class="action-box" aria-label="Activity Schedule">
+            <span class="action-icon">📅</span>
             <div class="action-box-text">Activity<br>Schedule</div>
         </a>
     </div>
