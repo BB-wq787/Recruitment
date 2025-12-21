@@ -46,13 +46,22 @@
             margin-bottom: 3rem;
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
+        /* 使用 mobile-style pill bar 為整體預設樣式，確保桌面與手機一致 */
+        /* Pill bar placed under the hello text; centered and compact */
         .action-boxes {
-            display: flex;
-            gap: 1.5rem;
-            width: 100%;
-            max-width: 600px;
+            display: inline-flex;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 36px;
+            background: rgba(0,0,0,0.20);
+            box-shadow: 0 10px 26px rgba(2,6,23,0.16);
+            align-items: center;
             justify-content: center;
-            flex-wrap: wrap;
+            max-width: 640px;
+            width: auto;
+            margin: 0 auto;
+            margin-top: 0.6rem; /* 放在 hello 句子下方 */
+            z-index: 60;
         }
         .action-box {
             display: inline-flex;
@@ -116,42 +125,36 @@
         }
         @media (max-width: 768px) {
             .action-boxes {
-                /* mobile: bottom fixed pill bar */
-                position: fixed;
-                bottom: 18px;
-                left: 50%;
-                transform: translateX(-50%);
+                /* mobile: full-width but constrained and centered under hello */
+                display: flex;
                 width: calc(100% - 36px);
                 max-width: 420px;
                 padding: 8px;
-                justify-content: space-between;
-                align-items: center;
-                background: rgba(0,0,0,0.28);
-                border-radius: 36px;
-                box-shadow: 0 12px 30px rgba(2,6,23,0.45);
-                z-index: 60;
+                margin-top: 0.6rem;
+                background: rgba(0,0,0,0.22);
             }
             .action-box {
                 flex: 1 1 48%;
                 margin: 0 6px;
                 min-width: 0;
-                height: 48px;
-                padding: 0 12px;
-                border-radius: 28px;
+                height: 44px;
+                padding: 0 10px;
+                border-radius: 24px;
+                font-size: 0.93rem;
             }
             .welcome-text {
                 font-size: 1.5rem;
             }
             .user-avatar {
-                width: 76px;
-                height: 76px;
-                font-size: 2rem;
+                width: 72px;
+                height: 72px;
+                font-size: 1.9rem;
             }
-            /* mobile: keep logout as normal button below content (no top-left override) */
+            /* ensure logout is below and not overlapped */
             .logout-btn {
-                /* 在有固定底部 action bar 時，增加底部空間以避免被遮蓋 */
-                margin-bottom: 92px;
-                z-index: 72;
+                margin-top: 1.2rem;
+                margin-bottom: 18px;
+                z-index: 70;
             }
         }
     </style>
@@ -174,7 +177,7 @@
             <span class="action-icon">🏷️</span>
             <div class="action-box-text">E-Stamp</div>
         </a>
-        <a href="#" class="action-box" aria-label="Activity Schedule">
+        <a href="{{ url_for('activity') }}" class="action-box" aria-label="Activity Schedule">
             <span class="action-icon">📅</span>
             <div class="action-box-text">Activity<br>Schedule</div>
         </a>

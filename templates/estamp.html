@@ -30,13 +30,14 @@
             left: 50%;
             transform: translateX(-50%);
             color: #B3002D;
-            font-size: 1.3rem;
-            font-weight: 600;
+            font-size: 1.6rem; /* larger for more emphasis */
+            font-weight: 800;
             text-align: center;
-            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
-            z-index: 10;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+            z-index: 12;
             padding: 0 1rem;
             max-width: 90%;
+            letter-spacing: 0.01em;
         }
         .circles-container {
             display: flex;
@@ -115,54 +116,31 @@
                 transform: scale(1) rotate(0deg);
             }
         }
-        .footprint {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            opacity: 0;
-            z-index: 1;
-            pointer-events: none;
-            transition: all 0.8s ease-in-out;
-        }
-        .footprint.animate {
-            animation: footprintAppear 0.6s ease-out forwards;
-        }
-        .footprint.stay {
-            opacity: 1;
-            transform: scale(1);
-        }
-        @keyframes footprintAppear {
-            0% {
-                opacity: 0;
-                transform: scale(0.3);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
+        /* footprint animations removed - no footprint element will be created */
         .back-btn {
-            position: absolute;
-            top: 2rem;
-            left: 2rem;
-            padding: 0.75rem 1.5rem;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            border-radius: 25px;
-            color: white;
+            /* 更高對比的顯示：淺色實心背景 + 深色文字 */
+            position: relative;
+            display: inline-block;
+            margin-top: 1.6rem;
+            padding: 0.7rem 1.4rem;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(11, 18, 32, 0.08);
+            border-radius: 24px;
+            color: #0b1220;
             font-size: 1rem;
-            font-weight: 500;
+            font-weight: 700;
             text-decoration: none;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            transition: all 0.18s ease;
+            box-shadow: 0 6px 18px rgba(2, 6, 23, 0.08);
+            backdrop-filter: blur(6px);
             z-index: 10;
         }
         .back-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.6);
-            color: white;
+            background: rgba(255, 255, 255, 1);
+            border-color: rgba(11, 18, 32, 0.12);
+            color: #0b1220;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 20px rgba(2, 6, 23, 0.12);
         }
         @media (max-width: 768px) {
             .stamp-circle {
@@ -190,16 +168,35 @@
                 top: 1rem;
             }
         }
+        /* bottom full-width three horizontal stripes */
+        .bottom-stripes {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 42px; /* 3 * 14px */
+            display: flex;
+            flex-direction: column;
+            pointer-events: none; /* decorative only */
+            z-index: 80;
+        }
+        .bottom-stripe {
+            width: 100%;
+            height: 14px;
+            flex: 1 1 0;
+        }
+        .bottom-stripe.top { background: #8FEAF7; }     /* light cyan */
+        .bottom-stripe.middle { background: #4EA3D9; }  /* blue */
+        .bottom-stripe.bottom { background: #D55B6B; }  /* pink/red */
     </style>
 </head>
 <body>
-    <a href="{{ url_for('welcome') }}" class="back-btn">← Back</a>
     <div class="greeting-text">
-        Hello {{ user_name }}! Complete all 4 activities to unlock your exclusive gift! 🎁
+        Collect all 4 stamps to unlock your exclusive gift! 🎉
     </div>
     
     <div class="estamp-container">
-        <div class="circles-container" id="circlesContainer">
+        <div class="circles-container" id="circlesContainer" data-collected='{{ collected_stamps | tojson }}'>
             <div class="stamp-item">
                 <div class="stamp-circle" data-index="0" data-letter="D">
                     <img src="{{ url_for('static', filename='D.png') }}" alt="D" class="stamp-letter">
@@ -225,12 +222,26 @@
                 <div class="stamp-label">Like & Follow DKSH's IG and Linkedln</div>
             </div>
         </div>
+
+        <!-- Back 按鈕已移到圓框下方（無箭頭，粗體文字） -->
+        <div style="text-align:center; width:100%;">
+            <a href="{{ url_for('welcome') }}" class="back-btn">Back</a>
+        </div>
+    </div>
+
+    <!-- bottom three horizontal stripes (visual reference) -->
+    <div class="bottom-stripes" aria-hidden="true">
+        <div class="bottom-stripe top"></div>
+        <div class="bottom-stripe middle"></div>
+        <div class="bottom-stripe bottom"></div>
     </div>
 
     <script>
-        let activatedCircles = {{ collected_stamps | tojson }};
-        const circles = document.querySelectorAll('.stamp-circle');
         const container = document.getElementById('circlesContainer');
+        let activatedCircles = JSON.parse(container.dataset.collected || '[]');
+        // 确保元素为数字并去重，避免初始化时重复 push 导致期望索引错位
+        activatedCircles = Array.from(new Set(activatedCircles.map(n => Number(n))));
+        const circles = document.querySelectorAll('.stamp-circle');
         
         // 禁用已收集的圆圈
         function disableCollectedCircles() {
@@ -326,56 +337,19 @@
         });
         
         function showFootprint(fromIndex, toIndex, skipAnimation) {
-            const fromCircle = circles[fromIndex];
+            // Footprint visuals removed. Directly activate the target circle.
             const toCircle = circles[toIndex];
-            
-            // 获取两个圆圈的位置
-            const fromRect = fromCircle.getBoundingClientRect();
-            const containerRect = container.getBoundingClientRect();
-            const toRect = toCircle.getBoundingClientRect();
-            
-            const fromX = fromRect.left + fromRect.width / 2 - containerRect.left;
-            const fromY = fromRect.top + fromRect.height / 2 - containerRect.top;
-            const toX = toRect.left + toRect.width / 2 - containerRect.left;
-            const toY = toRect.top + toRect.height / 2 - containerRect.top;
-            
-            // 计算中间位置（圆框之间的中点）
-            const midX = (fromX + toX) / 2;
-            const midY = (fromY + toY) / 2;
-            
-            // 创建足迹元素，放在中间位置
-            const footprint = document.createElement('img');
-            footprint.src = "{{ url_for('static', filename='foot.svg') }}";
-            footprint.className = 'footprint';
-            footprint.style.left = (midX - 20) + 'px';
-            footprint.style.top = (midY - 20) + 'px';
-            container.appendChild(footprint);
-            
-            if (skipAnimation) {
-                // 直接显示足迹，不播放动画
-                footprint.classList.add('stay');
-            } else {
-                // 显示足迹出现动画
-                setTimeout(() => {
-                    footprint.classList.add('animate');
-                }, 50);
-                
-                // 动画完成后，足迹停留在中间位置
-                setTimeout(() => {
-                    footprint.classList.add('stay');
-                    footprint.classList.remove('animate');
-                }, 700);
-            }
-            
-            // 显示字母并禁用圆圈
-            setTimeout(() => {
+        setTimeout(() => {
                 toCircle.classList.add('active');
                 toCircle.classList.add('disabled');
                 toCircle.style.pointerEvents = 'none';
-                activatedCircles.push(toIndex);
-                saveStamps();
+                if (!skipAnimation) {
+                    // 只有使用者互動時才把 index push 並保存，初始化時不重複 push
+                    activatedCircles.push(toIndex);
+                    saveStamps();
+                }
                 checkAllCollected();
-            }, skipAnimation ? 100 : 800);
+            }, skipAnimation ? 100 : 300);
         }
         
         // 初始化时检查是否全部收集完成

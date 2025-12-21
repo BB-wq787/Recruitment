@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>2026 Supply Chain Management Associate Program</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='bk.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            padding: 2rem 0;
+            color: #fff;
+        }
+        .shell {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 18px;
+            background: rgba(0,0,0,0.18);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(2,6,23,0.16);
+        }
+        .page-title {
+            text-align: center;
+            font-weight: 900;
+            font-size: 1.5rem; /* larger, more prominent */
+            line-height: 1.35; /* slightly more breathing between lines */
+            margin-bottom: 28px; /* more space below title */
+            color: #b3002d; /* deep red title */
+            letter-spacing: 0.02em;
+            text-shadow: 0 6px 18px rgba(0,0,0,0.45);
+        }
+        .page-title .line {
+            display: block;
+            margin-bottom: 8px; /* spacing between the three lines */
+        }
+        .timeline {
+            margin-top: 12px;
+            position: relative;
+            padding: 12px 0;
+        }
+        /* center vertical line */
+        .timeline:before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: rgba(255,255,255,0.12);
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        .timeline-item {
+            position: relative;
+            padding: 10px 0;
+            min-height: 82px; /* ensure space for side cards */
+        }
+        /* connecting dot */
+        .timeline-item:after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 18px;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #b3002d;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .timeline-content {
+            width: 44%;
+            padding: 12px;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.36);
+            color: #ffffff;
+            box-shadow: 0 8px 20px rgba(2,6,23,0.16);
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 420ms ease, transform 420ms ease;
+            position: absolute;
+            top: 6px;
+        }
+        /* alternate left / right: position near center line */
+        .timeline-item:nth-child(odd) .timeline-content {
+            left: 50%;
+            transform: translateX(calc(-100% - 12px)) translateY(12px);
+            text-align: right;
+        }
+        .timeline-item:nth-child(odd) .timeline-content.visible {
+            transform: translateX(calc(-100% - 12px)) translateY(0);
+            opacity: 1;
+        }
+        .timeline-item:nth-child(even) .timeline-content {
+            left: 50%;
+            transform: translateX(12px) translateY(12px);
+            text-align: left;
+        }
+        .timeline-item:nth-child(even) .timeline-content.visible {
+            transform: translateX(12px) translateY(0);
+            opacity: 1;
+        }
+        .timeline-activity {
+            font-weight:700;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+        .timeline-date {
+            font-weight:600;
+            color: #ffdede;
+            font-size: 0.95rem;
+        }
+        .timeline-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .back-link {
+            display:inline-block;
+            margin-top:16px;
+            background: rgba(255,255,255,0.96);
+            color: #0b1220;
+            padding:8px 14px;
+            border-radius:20px;
+            text-decoration:none;
+            font-weight:700;
+        }
+        @media (max-width:600px){
+            .timeline-date{min-width:120px;font-size:0.95rem;text-align:right}
+            .page-title{font-size:1.05rem;line-height:1.15}
+            .timeline-item{padding:10px}
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <div class="shell">
+            <div class="page-title" aria-hidden="false">
+                <span class="line">2026</span>
+                <span class="line">Supply Chain</span>
+                <span class="line">Management Associate Program</span>
+            </div>
+
+            <div class="timeline" role="list">
+                <div class="timeline-item" role="listitem">
+                    <div class="timeline-content">
+                        <div class="timeline-activity">Application Deadline</div>
+                        <div class="timeline-date">31 Mar, 2026</div>
+                    </div>
+                </div>
+                <div class="timeline-item" role="listitem">
+                    <div class="timeline-content">
+                        <div class="timeline-activity">Workshop 1 — Site Visit</div>
+                        <div class="timeline-date">10 May, 2026</div>
+                    </div>
+                </div>
+                <div class="timeline-item" role="listitem">
+                    <div class="timeline-content">
+                        <div class="timeline-activity">Workshop 2 — Game Day</div>
+                        <div class="timeline-date">20 Jun, 2026</div>
+                    </div>
+                </div>
+                <div class="timeline-item" role="listitem">
+                    <div class="timeline-content">
+                        <div class="timeline-activity">Written Exam</div>
+                        <div class="timeline-date">15 Apr, 2026</div>
+                    </div>
+                </div>
+                <div class="timeline-item" role="listitem">
+                    <div class="timeline-content">
+                        <div class="timeline-activity">Group Interview</div>
+                        <div class="timeline-date">25 Jul, 2026</div>
+                    </div>
+                </div>
+                <div class="timeline-item" role="listitem">
+                    <div class="timeline-content">
+                        <div class="timeline-activity">Final Interview</div>
+                        <div class="timeline-date">05 Aug, 2026</div>
+                    </div>
+                </div>
+            </div>
+
+            <a href="{{ url_for('activity') }}" class="back-link">Back to Activities</a>
+        </div>
+    </div>
+    <script>
+        // Fade-in when each timeline content enters viewport (with slight stagger)
+        document.addEventListener('DOMContentLoaded', function () {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // add visible with tiny stagger based on index
+                        const el = entry.target;
+                        setTimeout(() => el.classList.add('visible'), (Array.from(document.querySelectorAll('.timeline-content')).indexOf(el) % 6) * 80);
+                    }
+                });
+            }, { threshold: 0.12 });
+
+            document.querySelectorAll('.timeline-content').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
+
+
