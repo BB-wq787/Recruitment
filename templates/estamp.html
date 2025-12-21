@@ -6,11 +6,13 @@
     <title>E-Stamp</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        html, body { height: 100%; }
         body {
             background-image: url("{{ url_for('static', filename='bk.jpg') }}");
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
+            /* avoid fixed on mobile which can cause blank areas when scrolling */
+            background-attachment: scroll;
             background-repeat: no-repeat;
             min-height: 100vh;
             padding: 2rem 0;
@@ -26,7 +28,7 @@
         }
         .greeting-text {
             position: absolute;
-            top: 2rem;
+            top: 5rem;
             left: 50%;
             transform: translateX(-50%);
             color: #B3002D;
@@ -228,28 +230,7 @@
             cursor: pointer;
             font-weight: 700;
         }
-        /* top toast */
-        .top-toast {
-            position: fixed;
-            top: -64px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(33,37,41,0.95);
-            color: #fff;
-            padding: 10px 18px;
-            border-radius: 20px;
-            font-weight: 800;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.28);
-            z-index: 210;
-            transition: transform 320ms ease, top 320ms ease, opacity 320ms ease;
-            opacity: 0;
-            pointer-events: none;
-        }
-        .top-toast.show {
-            top: 18px;
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
+        /* top toast removed per user request */
     </style>
 </head>
 <body>
@@ -310,8 +291,7 @@
         </div>
     </div>
 
-    <!-- top toast (slides down once) -->
-    <div id="topToast" class="top-toast" aria-hidden="true" style="display:none;">Congratulations!</div>
+    <!-- top toast removed per user request -->
 
     <script>
         const container = document.getElementById('circlesContainer');
@@ -511,22 +491,12 @@
             // start animation
             tick();
 
-            // show top toast
-            const toast = document.getElementById('topToast');
-            if (toast) {
-                toast.style.display = 'block';
-                void toast.offsetWidth;
-                toast.classList.add('show');
-            }
+            // top toast removed per user request
 
             // auto-hide after duration
             const hideAfter = 3200;
             const hideTimer = setTimeout(() => {
-                // hide toast
-                if (toast) {
-                    toast.classList.remove('show');
-                    setTimeout(()=>{ toast.style.display='none'; }, 320);
-                }
+                // top toast removed per user request
                 // stop animation
                 cancelAnimationFrame(rafId);
                 window.removeEventListener('resize', resizeCanvas);
@@ -547,7 +517,6 @@
                     window.removeEventListener('resize', resizeCanvas);
                     overlay.style.display = 'none';
                     overlay.setAttribute('aria-hidden', 'true');
-                    if (toast) { toast.classList.remove('show'); toast.style.display='none'; }
                 };
             }
         }
