@@ -79,15 +79,16 @@
             font-weight:800;
             font-size:1rem;
         }
-        .timeline-body { display:flex; flex-direction:column; gap:4px; }
+        .timeline-body { display:flex; flex-direction:column; gap:4px; align-items:flex-start; text-align:left; }
         /* color steps to represent progress (lighter -> darker) */
-        /* blue gradient steps to indicate progress (lighter -> deeper blue) */
-        .timeline-item:nth-child(1) .timeline-content { background: linear-gradient(135deg, rgba(200,220,255,0.18), rgba(30,58,138,0.12)); }
-        .timeline-item:nth-child(2) .timeline-content { background: linear-gradient(135deg, rgba(180,210,255,0.18), rgba(30,58,138,0.16)); }
-        .timeline-item:nth-child(3) .timeline-content { background: linear-gradient(135deg, rgba(150,190,255,0.18), rgba(30,58,138,0.22)); }
-        .timeline-item:nth-child(4) .timeline-content { background: linear-gradient(135deg, rgba(120,170,255,0.18), rgba(30,58,138,0.28)); }
-        .timeline-item:nth-child(5) .timeline-content { background: linear-gradient(135deg, rgba(90,150,255,0.18), rgba(30,58,138,0.36)); }
-        .timeline-item:nth-child(6) .timeline-content { background: linear-gradient(135deg, rgba(60,130,255,0.18), rgba(30,58,138,0.48)); }
+        /* deeper blue gradients for stronger contrast; text left-aligned */
+        .timeline-item:nth-child(1) .timeline-content { background: linear-gradient(135deg, rgba(150,180,255,0.12), rgba(12,36,96,0.44)); }
+        .timeline-item:nth-child(2) .timeline-content { background: linear-gradient(135deg, rgba(130,165,255,0.12), rgba(12,36,96,0.50)); }
+        .timeline-item:nth-child(3) .timeline-content { background: linear-gradient(135deg, rgba(110,150,255,0.12), rgba(12,36,96,0.56)); }
+        .timeline-item:nth-child(4) .timeline-content { background: linear-gradient(135deg, rgba(90,135,255,0.12), rgba(12,36,96,0.62)); }
+        .timeline-item:nth-child(5) .timeline-content { background: linear-gradient(135deg, rgba(70,120,255,0.12), rgba(12,36,96,0.68)); }
+        .timeline-item:nth-child(6) .timeline-content { background: linear-gradient(135deg, rgba(50,105,255,0.12), rgba(12,36,96,0.76)); }
+        .timeline-activity, .timeline-date { text-align: left; }
         .timeline-activity { font-weight:800; color:#fff; margin-bottom:6px; }
         .timeline-date { font-weight:700; color:#ffdede; font-size:0.95rem; }
         .timeline-content.visible { opacity:1; transform:translateY(0); }

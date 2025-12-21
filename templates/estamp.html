@@ -27,9 +27,11 @@
             position: relative;
         }
         .greeting-text {
-            /* place in normal flow so it sits just above the circles */
-            position: relative;
-            margin: 0 0 0.6rem 0;
+            /* center the title block and ensure it's horizontally centered */
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 0 auto 0.6rem auto;
             color: #B3002D;
             font-size: 1.6rem; /* larger for more emphasis */
             font-weight: 800;
@@ -37,7 +39,6 @@
             text-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
             z-index: 12;
             padding: 0 1rem;
-            max-width: 90%;
             letter-spacing: 0.01em;
         }
         .circles-container {
@@ -448,14 +449,14 @@
         function showFootprint(fromIndex, toIndex, skipAnimation) {
             // Footprint visuals removed. Directly activate the target circle.
             const toCircle = circles[toIndex];
-        setTimeout(() => {
+            setTimeout(() => {
                 toCircle.classList.add('active');
                 toCircle.classList.add('disabled');
                 toCircle.style.pointerEvents = 'none';
                 if (!skipAnimation) {
                     // 只有使用者互動時才把 index push 並保存，初始化時不重複 push
-                    activatedCircles.push(toIndex);
-                    saveStamps();
+                activatedCircles.push(toIndex);
+                saveStamps();
                 }
                 checkAllCollected();
             }, skipAnimation ? 100 : 300);
