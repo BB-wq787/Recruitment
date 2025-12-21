@@ -14,16 +14,18 @@
             background-attachment: scroll;
             background-repeat: no-repeat;
             min-height: 100vh;
-            padding: 2rem 0;
+            /* remove top padding so page content sits at very top */
+            padding: 0 0 2rem;
             color: #fff;
         }
         .shell {
             max-width: 760px;
             margin: 0 auto;
-            padding: 18px;
-            background: rgba(0,0,0,0.18);
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(2,6,23,0.16);
+            /* remove gray translucent wrapper so each timeline card is standalone */
+            padding: 12px 6px;
+            background: transparent;
+            border-radius: 0;
+            box-shadow: none;
         }
         .page-title {
             text-align: center;
@@ -39,7 +41,7 @@
 
         /* Sequential vertical cards (no center axis/dots) */
         .timeline {
-            margin-top: 12px;
+            margin-top: 0;
             position: relative;
             padding: 6px 0;
             display: flex;
@@ -53,7 +55,10 @@
             width: 100%;
             padding: 14px 16px;
             border-radius: 12px;
-            background: rgba(59,130,246,0.12); /* default light */
+            /* use horizontal layout: number + body */
+            display: flex;
+            align-items: center;
+            gap: 12px;
             color: #ffffff;
             box-shadow: 0 8px 20px rgba(2,6,23,0.18);
             position: relative;
@@ -61,14 +66,28 @@
             transform: translateY(12px);
             transition: opacity 420ms ease, transform 420ms ease;
         }
+        .timeline-number {
+            width: 40px;
+            height: 40px;
+            min-width:40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.12);
+            color: #ffffff;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-weight:800;
+            font-size:1rem;
+        }
+        .timeline-body { display:flex; flex-direction:column; gap:4px; }
         /* color steps to represent progress (lighter -> darker) */
-        /* color steps: from light gray -> DKSH red (#b3002d) to indicate progress */
-        .timeline-item:nth-child(1) .timeline-content { background: rgba(230,230,230,0.06); }
-        .timeline-item:nth-child(2) .timeline-content { background: rgba(179,0,45,0.08); }
-        .timeline-item:nth-child(3) .timeline-content { background: rgba(179,0,45,0.16); }
-        .timeline-item:nth-child(4) .timeline-content { background: rgba(179,0,45,0.24); }
-        .timeline-item:nth-child(5) .timeline-content { background: rgba(179,0,45,0.32); }
-        .timeline-item:nth-child(6) .timeline-content { background: rgba(179,0,45,0.48); }
+        /* blue gradient steps to indicate progress (lighter -> deeper blue) */
+        .timeline-item:nth-child(1) .timeline-content { background: linear-gradient(135deg, rgba(200,220,255,0.18), rgba(30,58,138,0.12)); }
+        .timeline-item:nth-child(2) .timeline-content { background: linear-gradient(135deg, rgba(180,210,255,0.18), rgba(30,58,138,0.16)); }
+        .timeline-item:nth-child(3) .timeline-content { background: linear-gradient(135deg, rgba(150,190,255,0.18), rgba(30,58,138,0.22)); }
+        .timeline-item:nth-child(4) .timeline-content { background: linear-gradient(135deg, rgba(120,170,255,0.18), rgba(30,58,138,0.28)); }
+        .timeline-item:nth-child(5) .timeline-content { background: linear-gradient(135deg, rgba(90,150,255,0.18), rgba(30,58,138,0.36)); }
+        .timeline-item:nth-child(6) .timeline-content { background: linear-gradient(135deg, rgba(60,130,255,0.18), rgba(30,58,138,0.48)); }
         .timeline-activity { font-weight:800; color:#fff; margin-bottom:6px; }
         .timeline-date { font-weight:700; color:#ffdede; font-size:0.95rem; }
         .timeline-content.visible { opacity:1; transform:translateY(0); }
@@ -97,7 +116,7 @@
     </style>
 </head>
 <body>
-    <div class="container py-4">
+    <div class="container">
         <div class="shell">
             <div class="page-title" aria-hidden="false">
                 <span class="line">2026</span>
@@ -106,42 +125,60 @@
             </div>
 
             <div class="timeline" role="list">
-                <div class="timeline-item" role="listitem">
-                    <div class="timeline-content">
+            <div class="timeline-item" role="listitem">
+                <div class="timeline-content">
+                    <div class="timeline-number">1</div>
+                    <div class="timeline-body">
                         <div class="timeline-activity">Application Deadline</div>
                         <div class="timeline-date">31 Mar, 2026</div>
                     </div>
                 </div>
-                <div class="timeline-item" role="listitem">
-                    <div class="timeline-content">
+            </div>
+            <div class="timeline-item" role="listitem">
+                <div class="timeline-content">
+                    <div class="timeline-number">2</div>
+                    <div class="timeline-body">
                         <div class="timeline-activity">Workshop 1 — Site Visit</div>
                         <div class="timeline-date">10 May, 2026</div>
                     </div>
                 </div>
-                <div class="timeline-item" role="listitem">
-                    <div class="timeline-content">
+            </div>
+            <div class="timeline-item" role="listitem">
+                <div class="timeline-content">
+                    <div class="timeline-number">3</div>
+                    <div class="timeline-body">
                         <div class="timeline-activity">Workshop 2 — Game Day</div>
                         <div class="timeline-date">20 Jun, 2026</div>
                     </div>
                 </div>
-                <div class="timeline-item" role="listitem">
-                    <div class="timeline-content">
+            </div>
+            <div class="timeline-item" role="listitem">
+                <div class="timeline-content">
+                    <div class="timeline-number">4</div>
+                    <div class="timeline-body">
                         <div class="timeline-activity">Written Exam</div>
                         <div class="timeline-date">15 Apr, 2026</div>
                     </div>
                 </div>
-                <div class="timeline-item" role="listitem">
-                    <div class="timeline-content">
+            </div>
+            <div class="timeline-item" role="listitem">
+                <div class="timeline-content">
+                    <div class="timeline-number">5</div>
+                    <div class="timeline-body">
                         <div class="timeline-activity">Group Interview</div>
                         <div class="timeline-date">25 Jul, 2026</div>
                     </div>
                 </div>
-                <div class="timeline-item" role="listitem">
-                    <div class="timeline-content">
+            </div>
+            <div class="timeline-item" role="listitem">
+                <div class="timeline-content">
+                    <div class="timeline-number">6</div>
+                    <div class="timeline-body">
                         <div class="timeline-activity">Final Interview</div>
                         <div class="timeline-date">05 Aug, 2026</div>
                     </div>
                 </div>
+            </div>
             </div>
 
             <a href="{{ url_for('activity') }}" class="back-link">Back to Activities</a>

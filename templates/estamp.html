@@ -27,10 +27,9 @@
             position: relative;
         }
         .greeting-text {
-            position: absolute;
-            top: 5rem;
-            left: 50%;
-            transform: translateX(-50%);
+            /* place in normal flow so it sits just above the circles */
+            position: relative;
+            margin: 0 0 0.6rem 0;
             color: #B3002D;
             font-size: 1.6rem; /* larger for more emphasis */
             font-weight: 800;
@@ -75,6 +74,43 @@
             transform: scale(1.05);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
             border-color: #666;
+        }
+        /* micro-interactions: smoother transitions and active pop */
+        .stamp-circle {
+            transition: transform 220ms cubic-bezier(.2,.9,.3,1), box-shadow 220ms ease, border-color 220ms ease;
+        }
+        .stamp-circle:active {
+            transform: scale(0.96);
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.6); opacity: 0; }
+            60% { transform: scale(1.08); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .stamp-circle.active {
+            border-color: #b3002d;
+            box-shadow: 0 0 0 8px rgba(179,0,45,0.12), 0 10px 30px rgba(179,0,45,0.12);
+            animation: popIn 420ms ease;
+        }
+        /* check badge that appears when collected */
+        .check-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #206A39;
+            color: white;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 800;
+            box-shadow: 0 6px 12px rgba(2,6,23,0.18);
+        }
+        .stamp-circle.active .check-badge {
+            display: inline-flex;
         }
         .stamp-circle.disabled {
             cursor: not-allowed;
@@ -167,9 +203,21 @@
             }
             .greeting-text {
                 font-size: 1.1rem;
-                top: 1rem;
             }
         }
+        /* subtle decorative background overlay to add depth */
+        .estamp-container::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background:
+                radial-gradient(rgba(255,255,255,0.02), rgba(0,0,0,0.08) 70%),
+                linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
+            mix-blend-mode: overlay;
+        }
+
         /* bottom full-width three horizontal stripes */
         .bottom-stripes {
             position: fixed;
@@ -243,24 +291,28 @@
             <div class="stamp-item">
                 <div class="stamp-circle" data-index="0" data-letter="D">
                     <img src="{{ url_for('static', filename='D.png') }}" alt="D" class="stamp-letter">
+                    <span class="check-badge" aria-hidden="true">✓</span>
                 </div>
                 <div class="stamp-label">Apply 2026 MA Program</div>
             </div>
             <div class="stamp-item">
                 <div class="stamp-circle" data-index="1" data-letter="K">
                     <img src="{{ url_for('static', filename='K.png') }}" alt="K" class="stamp-letter">
+                    <span class="check-badge" aria-hidden="true">✓</span>
                 </div>
                 <div class="stamp-label">Workshop 1 Site Visit</div>
             </div>
             <div class="stamp-item">
                 <div class="stamp-circle" data-index="2" data-letter="S">
                     <img src="{{ url_for('static', filename='S.png') }}" alt="S" class="stamp-letter">
+                    <span class="check-badge" aria-hidden="true">✓</span>
                 </div>
                 <div class="stamp-label">Workshop 2 Game day</div>
             </div>
             <div class="stamp-item">
                 <div class="stamp-circle" data-index="3" data-letter="H">
                     <img src="{{ url_for('static', filename='H.png') }}" alt="H" class="stamp-letter">
+                    <span class="check-badge" aria-hidden="true">✓</span>
                 </div>
                 <div class="stamp-label">Like & Follow DKSH's IG and Linkedln</div>
             </div>
