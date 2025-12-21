@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 import sqlite3
 import os
 
@@ -26,10 +26,16 @@ def init_db():
             age INTEGER,
             email TEXT UNIQUE,
             phone TEXT,
-            password TEXT NOT NULL
+            password TEXT NOT NULL,
+            stamps TEXT DEFAULT ''
         )
         """
     )
+    # 为现有用户添加 stamps 字段（如果不存在）
+    try:
+        cur.execute("ALTER TABLE users ADD COLUMN stamps TEXT DEFAULT ''")
+    except sqlite3.OperationalError:
+        pass  # 字段已存在
     conn.commit()
     conn.close()
 
@@ -123,6 +129,60 @@ def welcome():
     if not user_name:
         return redirect(url_for("index"))
     return render_template("welcome.html", user_name=user_name)
+
+
+@app.route("/estamp", methods=["GET"])
+def estamp():
+    user_name = session.get("user_name")
+    if not user_name:
+        return redirect(url_for("index"))
+    
+    # 获取用户已收集的stamps
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT stamps FROM users WHERE name = ?", (user_name,))
+    user = cur.fetchone()
+    stamps_str = ""
+    if user:
+        try:
+            stamps_str = user["stamps"] if user["stamps"] else ""
+        except (KeyError, IndexError):
+            stamps_str = ""
+    conn.close()
+    
+    # 解析stamps字符串为列表
+    collected_stamps = [int(s) for s in stamps_str.split(",") if s.strip()] if stamps_str else []
+    
+    return render_template("estamp.html", user_name=user_name, collected_stamps=collected_stamps)
+
+
+@app.route("/estamp/save", methods=["POST"])
+def save_stamps():
+    user_name = session.get("user_name")
+    if not user_name:
+        return jsonify({"success": False, "error": "Not logged in"}), 401
+    
+    try:
+        data = request.get_json()
+        stamps = data.get("stamps", [])
+        stamps_str = ",".join(map(str, sorted(stamps)))  # 排序确保顺序一致
+        
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("UPDATE users SET stamps = ? WHERE name = ?", (stamps_str, user_name))
+        conn.commit()
+        conn.close()
+        
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route("/logout", methods=["GET"])
+def logout():
+    session.clear()
+    flash("You have been logged out successfully.", "success")
+    return redirect(url_for("index") + "?no_splash=1")
 
 
 @app.route("/reset_password", methods=["POST"])
