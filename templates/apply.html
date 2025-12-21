@@ -27,23 +27,21 @@
         .page-title {
             text-align: center;
             font-weight: 900;
-            font-size: 1.5rem; /* larger, more prominent */
-            line-height: 1.35; /* slightly more breathing between lines */
-            margin-bottom: 28px; /* more space below title */
-            color: #b3002d; /* deep red title */
+            font-size: 1.6rem; /* more prominent */
+            line-height: 1.3;
+            margin-bottom: 28px;
+            color: #b3002d;
             letter-spacing: 0.02em;
             text-shadow: 0 6px 18px rgba(0,0,0,0.45);
         }
-        .page-title .line {
-            display: block;
-            margin-bottom: 8px; /* spacing between the three lines */
-        }
+        .page-title .line { display:block; margin-bottom:6px; }
+
+        /* Vertical center line timeline with alternating cards */
         .timeline {
             margin-top: 12px;
             position: relative;
-            padding: 12px 0;
+            padding: 18px 0;
         }
-        /* center vertical line */
         .timeline:before {
             content: "";
             position: absolute;
@@ -51,16 +49,15 @@
             top: 0;
             bottom: 0;
             width: 4px;
-            background: rgba(255,255,255,0.12);
+            background: #b3002d;
             transform: translateX(-50%);
             border-radius: 2px;
+            opacity: 0.9;
         }
         .timeline-item {
             position: relative;
-            padding: 10px 0;
-            min-height: 82px; /* ensure space for side cards */
+            min-height: 90px;
         }
-        /* connecting dot */
         .timeline-item:after {
             content: "";
             position: absolute;
@@ -74,50 +71,37 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         .timeline-content {
-            width: 44%;
-            padding: 12px;
+            width: 46%;
+            padding: 12px 14px;
             border-radius: 10px;
-            background: rgba(0,0,0,0.36);
+            background: rgba(0,0,0,0.42);
             color: #ffffff;
-            box-shadow: 0 8px 20px rgba(2,6,23,0.16);
+            box-shadow: 0 8px 20px rgba(2,6,23,0.18);
+            position: absolute;
+            top: 6px;
             opacity: 0;
             transform: translateY(12px);
             transition: opacity 420ms ease, transform 420ms ease;
-            position: absolute;
-            top: 6px;
         }
-        /* alternate left / right: position near center line */
         .timeline-item:nth-child(odd) .timeline-content {
             left: 50%;
             transform: translateX(calc(-100% - 12px)) translateY(12px);
             text-align: right;
-        }
-        .timeline-item:nth-child(odd) .timeline-content.visible {
-            transform: translateX(calc(-100% - 12px)) translateY(0);
-            opacity: 1;
         }
         .timeline-item:nth-child(even) .timeline-content {
             left: 50%;
             transform: translateX(12px) translateY(12px);
             text-align: left;
         }
-        .timeline-item:nth-child(even) .timeline-content.visible {
-            transform: translateX(12px) translateY(0);
-            opacity: 1;
-        }
-        .timeline-activity {
-            font-weight:700;
-            color: #ffffff;
-            margin-bottom: 6px;
-        }
-        .timeline-date {
-            font-weight:600;
-            color: #ffdede;
-            font-size: 0.95rem;
-        }
-        .timeline-content.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .timeline-activity { font-weight:800; color:#fff; margin-bottom:6px; }
+        .timeline-date { font-weight:700; color:#ffdede; font-size:0.95rem; }
+        .timeline-content.visible { opacity:1; transform:translateY(0); }
+        @media (max-width:800px){
+            .timeline:before { left: 8%; transform: none; width: 3px; }
+            .timeline-item:after { left: 8%; transform: none; top: 20px; }
+            .timeline-content { width: calc(100% - 96px); left: 14%; transform: translateY(12px); position: relative; }
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content { text-align:left; transform: translateY(12px); }
         }
         .back-link {
             display:inline-block;
@@ -190,22 +174,22 @@
     <script>
         // Fade-in when each timeline content enters viewport (with slight stagger)
         document.addEventListener('DOMContentLoaded', function () {
+            const contents = Array.from(document.querySelectorAll('.timeline-content'));
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        // add visible with tiny stagger based on index
                         const el = entry.target;
-                        setTimeout(() => el.classList.add('visible'), (Array.from(document.querySelectorAll('.timeline-content')).indexOf(el) % 6) * 80);
+                        const idx = contents.indexOf(el);
+                        setTimeout(() => el.classList.add('visible'), (idx % 6) * 80);
                     }
                 });
             }, { threshold: 0.12 });
 
-            document.querySelectorAll('.timeline-content').forEach(el => {
-                observer.observe(el);
-            });
+            contents.forEach(el => observer.observe(el));
         });
     </script>
 </body>
 </html>
+
 
 

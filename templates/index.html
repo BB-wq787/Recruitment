@@ -72,21 +72,24 @@
             font-size: 1.3rem;
             letter-spacing: 0.15em;
             text-transform: none; /* only first letter of each word capitalized */
-            color: rgba(245, 245, 245, 0.95);
+            color: #b3002d;
             text-align: center;
             margin-top: 12px;
             transform: translateY(-70px);
-            font-weight: 500;
+            font-weight: 700;
+            text-shadow: 0 6px 18px rgba(0,0,0,0.45);
         }
         .splash-title {
             font-size: 1.1rem; /* smaller than logo */
             letter-spacing: 0.18em;
             text-transform: none; /* keep each word capitalized as typed */
-            color: rgba(245, 245, 245, 0.96);
+            color: #b3002d;
             text-align: center;
             /* lift title further and increase gap from logo */
             margin-top: 20px;
             transform: translateY(-85px);
+            font-weight: 700;
+            text-shadow: 0 6px 18px rgba(0,0,0,0.45);
         }
         /* Main page content wrapper: initially hidden, then fade in after splash */
         .page-shell {
@@ -178,19 +181,10 @@
                         <label class="form-label">Full Name *</label>
                         <input type="text" name="name" class="form-control" required>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Gender</label>
-                        <select name="gender" class="form-select">
-                            <option value="">-- Please Select --</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Age</label>
-                        <input type="number" name="age" class="form-control" min="0">
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email *</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
                     <div class="mb-3">
                         <label class="form-label">Email *</label>
                         <input type="email" name="email" class="form-control" required>
