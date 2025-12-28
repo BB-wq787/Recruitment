@@ -39,80 +39,199 @@
         }
         .page-title .line { display:block; margin-bottom:6px; }
 
-        /* Sequential vertical cards (no center axis/dots) */
+        /* Central axis timeline with clear cards */
         .timeline {
             margin-top: 0;
             position: relative;
-            padding: 6px 0;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
+            padding: 40px 20px;
         }
+
+        /* Central axis line */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.6), rgba(255,255,255,0.3));
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
         .timeline-item {
             position: relative;
-        }
-        .timeline-content {
-            width: 100%;
-            padding: 14px 16px;
-            border-radius: 12px;
-            /* use horizontal layout: number + body */
+            margin-bottom: 60px;
             display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #ffffff;
-            box-shadow: 0 8px 20px rgba(2,6,23,0.18);
+            justify-content: center;
+        }
+
+        .timeline-content {
+            width: 380px;
+            padding: 20px 24px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.95);
+            color: #1a1a1a;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
             position: relative;
             opacity: 0;
-            transform: translateY(12px);
-            transition: opacity 420ms ease, transform 420ms ease;
+            transform: translateY(20px) scale(0.95);
+            transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .timeline-number {
-            width: 40px;
-            height: 40px;
-            min-width:40px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.12);
+
+        /* Alternate card positions */
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: auto;
+            margin-right: 40px;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-right: auto;
+            margin-left: 40px;
+        }
+
+
+        .timeline-body {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        /* Progressive color gradients for timeline items */
+        .timeline-item:nth-child(1) .timeline-content {
+            background: linear-gradient(135deg, rgba(135,206,235,0.95), rgba(70,130,180,0.98));
+            border-color: rgba(135,206,235,0.3);
+        }
+        .timeline-item:nth-child(2) .timeline-content {
+            background: linear-gradient(135deg, rgba(100,149,237,0.95), rgba(65,105,225,0.98));
+            border-color: rgba(100,149,237,0.3);
+        }
+        .timeline-item:nth-child(3) .timeline-content {
+            background: linear-gradient(135deg, rgba(65,105,225,0.95), rgba(30,144,255,0.98));
+            border-color: rgba(65,105,225,0.3);
+        }
+        .timeline-item:nth-child(4) .timeline-content {
+            background: linear-gradient(135deg, rgba(0,191,255,0.95), rgba(0,139,139,0.98));
+            border-color: rgba(0,191,255,0.3);
+        }
+        .timeline-item:nth-child(5) .timeline-content {
+            background: linear-gradient(135deg, rgba(0,206,209,0.95), rgba(0,128,128,0.98));
+            border-color: rgba(0,206,209,0.3);
+        }
+        .timeline-item:nth-child(6) .timeline-content {
+            background: linear-gradient(135deg, rgba(32,178,170,0.95), rgba(0,139,139,0.98));
+            border-color: rgba(32,178,170,0.3);
+        }
+
+        .timeline-activity {
+            font-weight: 700;
+            font-size: 1.1rem;
             color: #ffffff;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            font-weight:800;
-            font-size:1rem;
+            margin-bottom: 8px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
-        .timeline-body { display:flex; flex-direction:column; gap:4px; align-items:flex-start; text-align:left; }
-        /* color steps to represent progress (lighter -> darker) */
-        /* deeper blue gradients for stronger contrast; text left-aligned */
-        .timeline-item:nth-child(1) .timeline-content { background: linear-gradient(135deg, rgba(150,180,255,0.12), rgba(12,36,96,0.44)); }
-        .timeline-item:nth-child(2) .timeline-content { background: linear-gradient(135deg, rgba(130,165,255,0.12), rgba(12,36,96,0.50)); }
-        .timeline-item:nth-child(3) .timeline-content { background: linear-gradient(135deg, rgba(110,150,255,0.12), rgba(12,36,96,0.56)); }
-        .timeline-item:nth-child(4) .timeline-content { background: linear-gradient(135deg, rgba(90,135,255,0.12), rgba(12,36,96,0.62)); }
-        .timeline-item:nth-child(5) .timeline-content { background: linear-gradient(135deg, rgba(70,120,255,0.12), rgba(12,36,96,0.68)); }
-        .timeline-item:nth-child(6) .timeline-content { background: linear-gradient(135deg, rgba(50,105,255,0.12), rgba(12,36,96,0.76)); }
-        .timeline-activity, .timeline-date { text-align: left; }
-        .timeline-activity { font-weight:800; color:#fff; margin-bottom:6px; }
-        .timeline-date { font-weight:700; color:#ffdede; font-size:0.95rem; }
-        .timeline-content.visible { opacity:1; transform:translateY(0); }
-        .timeline-activity { font-weight:800; color:#fff; margin-bottom:6px; }
-        .timeline-date { font-weight:700; color:#ffdede; font-size:0.95rem; }
-        .timeline-content.visible { opacity:1; transform:translateY(0); }
-        @media (max-width:800px){
-            .timeline { gap: 12px; padding: 6px 0; }
-            .timeline-content { width: 100%; padding: 12px 14px; }
+
+        .timeline-date {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #ffffff;
+            opacity: 0.9;
         }
+
+        .timeline-content.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        @media (max-width: 900px) {
+            .timeline-content {
+                width: 320px;
+                padding: 18px 20px;
+            }
+
+            .timeline-item:nth-child(even)::after {
+                right: 320px;
+            }
+
+            .timeline-item:nth-child(odd)::after {
+                left: 320px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .timeline-item {
+                justify-content: center;
+                margin-bottom: 50px;
+            }
+
+            .timeline-content {
+                width: calc(50% - 40px);
+                max-width: 280px;
+                padding: 16px 18px;
+            }
+
+            .timeline-item:nth-child(even) .timeline-content {
+                margin-left: auto;
+                margin-right: 20px;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-content {
+                margin-right: auto;
+                margin-left: 20px;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+            .timeline {
+                padding: 20px 15px;
+            }
+
+            .timeline-content {
+                width: calc(50% - 30px);
+                max-width: 250px;
+                padding: 14px 16px;
+            }
+
+            .timeline-item:nth-child(even) .timeline-content {
+                margin-left: auto;
+                margin-right: 15px;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-content {
+                margin-right: auto;
+                margin-left: 15px;
+            }
+
+            .page-title {
+                font-size: 1.2rem;
+                line-height: 1.2;
+                margin-bottom: 20px;
+            }
+        }
+
         .back-link {
-            display:inline-block;
-            margin-top:16px;
+            display: inline-block;
+            margin-top: 20px;
             background: rgba(255,255,255,0.96);
             color: #0b1220;
-            padding:8px 14px;
-            border-radius:20px;
-            text-decoration:none;
-            font-weight:700;
+            padding: 10px 16px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
         }
-        @media (max-width:600px){
-            .timeline-date{min-width:120px;font-size:0.95rem;text-align:right}
-            .page-title{font-size:1.05rem;line-height:1.15}
-            .timeline-item{padding:10px}
+
+        .back-link:hover {
+            background: rgba(255,255,255,1);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
     </style>
 </head>
@@ -128,7 +247,6 @@
             <div class="timeline" role="list">
             <div class="timeline-item" role="listitem">
                 <div class="timeline-content">
-                    <div class="timeline-number">1</div>
                     <div class="timeline-body">
                         <div class="timeline-activity">Application Deadline</div>
                         <div class="timeline-date">31 Mar, 2026</div>
@@ -137,7 +255,6 @@
             </div>
             <div class="timeline-item" role="listitem">
                 <div class="timeline-content">
-                    <div class="timeline-number">2</div>
                     <div class="timeline-body">
                         <div class="timeline-activity">Workshop 1 — Site Visit</div>
                         <div class="timeline-date">10 May, 2026</div>
@@ -146,7 +263,6 @@
             </div>
             <div class="timeline-item" role="listitem">
                 <div class="timeline-content">
-                    <div class="timeline-number">3</div>
                     <div class="timeline-body">
                         <div class="timeline-activity">Workshop 2 — Game Day</div>
                         <div class="timeline-date">20 Jun, 2026</div>
@@ -155,7 +271,6 @@
             </div>
             <div class="timeline-item" role="listitem">
                 <div class="timeline-content">
-                    <div class="timeline-number">4</div>
                     <div class="timeline-body">
                         <div class="timeline-activity">Written Exam</div>
                         <div class="timeline-date">15 Apr, 2026</div>
@@ -164,7 +279,6 @@
             </div>
             <div class="timeline-item" role="listitem">
                 <div class="timeline-content">
-                    <div class="timeline-number">5</div>
                     <div class="timeline-body">
                         <div class="timeline-activity">Group Interview</div>
                         <div class="timeline-date">25 Jul, 2026</div>
@@ -173,7 +287,6 @@
             </div>
             <div class="timeline-item" role="listitem">
                 <div class="timeline-content">
-                    <div class="timeline-number">6</div>
                     <div class="timeline-body">
                         <div class="timeline-activity">Final Interview</div>
                         <div class="timeline-date">05 Aug, 2026</div>

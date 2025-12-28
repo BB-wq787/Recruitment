@@ -29,17 +29,18 @@
         }
         .greeting-text {
             position: absolute;
-            top: 2rem;
+            top: 1.5rem;
             left: 50%;
             transform: translateX(-50%);
             color: #B3002D;
-            font-size: 1.3rem;
-            font-weight: 600;
+            font-size: 1.8rem;
+            font-weight: 800;
             text-align: center;
-            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
+            text-shadow: 0 3px 6px rgba(255, 255, 255, 0.9), 0 1px 3px rgba(0, 0, 0, 0.3);
             z-index: 10;
             padding: 0 1rem;
-            max-width: 90%;
+            max-width: 95%;
+            line-height: 1.2;
         }
         .circles-container {
             display: flex;
@@ -66,15 +67,37 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             z-index: 2;
+            overflow: hidden;
+        }
+        .stamp-circle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.3) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+            z-index: -1;
+        }
+        .stamp-circle:hover:not(.disabled)::before {
+            width: 200px;
+            height: 200px;
         }
         .stamp-circle:hover:not(.disabled) {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-            border-color: #666;
+            transform: scale(1.08) rotate(5deg);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 30px rgba(179, 0, 45, 0.2);
+            border-color: #B3002D;
+        }
+        .stamp-circle:active:not(.disabled) {
+            transform: scale(0.95) rotate(-3deg);
+            transition: all 0.1s ease;
         }
         .stamp-circle.disabled {
             cursor: not-allowed;
@@ -82,7 +105,53 @@
         }
         .stamp-circle.active {
             border-color: #4A90E2;
-            box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.3);
+            box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.3), 0 0 20px rgba(74, 144, 226, 0.4);
+            animation: stampPulse 2s infinite;
+        }
+        .stamp-circle.collecting {
+            animation: stampBounce 0.8s ease-in-out;
+        }
+        @keyframes stampPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.3), 0 0 20px rgba(74, 144, 226, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(74, 144, 226, 0.4), 0 0 30px rgba(74, 144, 226, 0.6);
+            }
+        }
+        @keyframes stampBounce {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1) translateY(-5px); }
+            50% { transform: scale(1.05) translateY(-10px); }
+            75% { transform: scale(1.08) translateY(-5px); }
+            100% { transform: scale(1); }
+        }
+
+        /* Stamp particle effects */
+        .stamp-particle {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #FFD700;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            animation: particleFly 1s ease-out forwards;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+        @keyframes particleFly {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(0.8) translate(var(--target-x), var(--target-y));
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.3) translate(var(--target-x), var(--target-y));
+            }
         }
         .stamp-label {
             color: #ffffff;
@@ -119,54 +188,28 @@
                 transform: scale(1) rotate(0deg);
             }
         }
-        .footprint {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            opacity: 0;
-            z-index: 1;
-            pointer-events: none;
-            transition: all 0.8s ease-in-out;
-        }
-        .footprint.animate {
-            animation: footprintAppear 0.6s ease-out forwards;
-        }
-        .footprint.stay {
-            opacity: 1;
-            transform: scale(1);
-        }
-        @keyframes footprintAppear {
-            0% {
-                opacity: 0;
-                transform: scale(0.3);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
         .back-btn {
-            position: absolute;
-            top: 2rem;
-            left: 2rem;
+            display: inline-block;
+            margin: 2rem auto 0;
             padding: 0.75rem 1.5rem;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(179, 0, 45, 0.3);
             border-radius: 25px;
-            color: white;
+            color: #B3002D;
             font-size: 1rem;
-            font-weight: 500;
+            font-weight: 600;
             text-decoration: none;
+            text-align: center;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(8px);
             z-index: 10;
         }
         .back-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.6);
-            color: white;
+            background: rgba(179, 0, 45, 0.1);
+            border-color: #B3002D;
+            color: #B3002D;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(179, 0, 45, 0.2);
         }
         @media (max-width: 768px) {
             .stamp-circle {
@@ -181,17 +224,15 @@
                 gap: 2rem;
                 margin-top: 2.5rem;
             }
-            .footprint {
-                width: 30px;
-                height: 30px;
-            }
             .stamp-label {
                 font-size: 0.8rem;
                 max-width: 120px;
             }
             .greeting-text {
-                font-size: 1.1rem;
+                font-size: 1.3rem;
                 top: 1rem;
+                padding: 0 1rem;
+                max-width: 98%;
             }
         }
 
@@ -501,8 +542,8 @@
     </style>
 </head>
 <body>
-    <a href="{{ url_for('welcome') }}" class="back-btn">← Back</a>
     <div class="greeting-text">
+        Ready to start your journey?<br>
         Collect all 4 stamps to unlock your exclusive gift! 🎉
     </div>
     
@@ -532,6 +573,11 @@
                 </div>
                 <div class="stamp-label">Like & Follow DKSH's IG and Linkedln</div>
             </div>
+        </div>
+
+        <!-- Back button below the stamps -->
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="{{ url_for('welcome') }}" class="back-btn">Back to Welcome</a>
         </div>
     </div>
 
@@ -617,7 +663,7 @@
         // 确保元素为数字并去重，避免初始化时重复 push 导致期望索引错位
         activatedCircles = Array.from(new Set(activatedCircles.map(n => Number(n))));
         const circles = document.querySelectorAll('.stamp-circle');
-
+        
         // 禁用已收集的圆圈
         function disableCollectedCircles() {
             activatedCircles.forEach(index => {
@@ -625,23 +671,17 @@
                 circles[index].style.pointerEvents = 'none';
             });
         }
-
+        
         // 初始化：显示已收集的stamps
         activatedCircles.forEach(index => {
             circles[index].classList.add('active');
-            // 如果之前有足迹，需要恢复显示
-            if (index > 0) {
-                setTimeout(() => {
-                    showFootprint(index - 1, index, true);
-                }, 100 * index);
-            }
         });
-
+        
         // 禁用已收集的圆圈
         setTimeout(() => {
             disableCollectedCircles();
         }, 500);
-
+        
         // 检查是否全部收集完成
         function checkAllCollected() {
             if (activatedCircles.length === 4) {
@@ -655,7 +695,7 @@
                 }, 400);
             }
         }
-
+        
         // 保存stamps到服务器
         function saveStamps() {
             fetch("{{ url_for('save_stamps') }}", {
@@ -673,6 +713,57 @@
             .catch(error => {
                 console.error('Error saving stamps:', error);
             });
+        }
+        
+        // Activate stamp with animation
+        function activateStamp(circleElement, index) {
+            // 移除点击动画类
+            circleElement.classList.remove('collecting');
+
+            // 添加激活状态和禁用
+            circleElement.classList.add('active');
+            circleElement.classList.add('disabled');
+            circleElement.style.pointerEvents = 'none';
+
+            // 创建粒子效果
+            createParticles(circleElement);
+
+            // 更新数据
+            activatedCircles.push(index);
+            saveStamps();
+            checkAllCollected();
+        }
+
+        // Create particle effect for stamp activation
+        function createParticles(circleElement) {
+            const rect = circleElement.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'stamp-particle';
+                particle.style.left = centerX + 'px';
+                particle.style.top = centerY + 'px';
+
+                // 随机方向
+                const angle = (i / 8) * Math.PI * 2;
+                const distance = 50 + Math.random() * 30;
+                const targetX = Math.cos(angle) * distance;
+                const targetY = Math.sin(angle) * distance;
+
+                particle.style.setProperty('--target-x', targetX + 'px');
+                particle.style.setProperty('--target-y', targetY + 'px');
+
+                document.body.appendChild(particle);
+
+                // 动画结束后移除粒子
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                }, 1000);
+            }
         }
 
         // Show application popup for first stamp
@@ -1051,41 +1142,42 @@
                     return;
                 }
 
-                // 按顺序点击，显示足迹动画
+                // 添加点击动画效果
+                this.classList.add('collecting');
+
+                // 按顺序点击，直接显示印章
                 if (index > 0) {
                     if (index === 1) {
                         // 第二个圆圈：显示测验弹窗
                         showQuizPopup(() => {
-                            // 答案正确后的回调：显示足迹动画
-                            showFootprint(activatedCircles[index - 1], index, false);
+                            // 答案正确后的回调：直接显示印章
+                            activateStamp(this, index);
                         });
                     } else if (index === 2) {
                         // 第三个圆圈：显示密码输入弹窗
                         showPasswordPopup(() => {
-                            // 密码正确后的回调：显示足迹动画
-                            showFootprint(activatedCircles[index - 1], index, false);
+                            // 密码正确后的回调：直接显示印章
+                            activateStamp(this, index);
                         });
                     } else if (index === 3) {
                         // 第四个圆圈：显示感谢弹窗
                         showThankPopup(() => {
-                            // 弹窗关闭后的回调：显示足迹动画
-                            showFootprint(activatedCircles[index - 1], index, false);
+                            // 弹窗关闭后的回调：直接显示印章
+                            activateStamp(this, index);
                         });
                     } else {
-                        showFootprint(activatedCircles[index - 1], index, false);
+                        // 直接显示印章
+                        setTimeout(() => {
+                            activateStamp(this, index);
+                        }, 300);
                     }
                 } else {
                     // 第一个圆圈：显示申请弹窗
                     showApplicationPopup(() => {
                         // 弹窗关闭后的回调：显示字母
                         setTimeout(() => {
-                            this.classList.add('active');
-                            this.classList.add('disabled');
-                            this.style.pointerEvents = 'none';
-                            activatedCircles.push(index);
-                            saveStamps();
-                            checkAllCollected();
-                        }, 100);
+                            activateStamp(this, index);
+                        }, 300);
                     });
                 }
             });
@@ -1162,12 +1254,6 @@
         // 初始化：显示已收集的stamps
         activatedCircles.forEach(index => {
             circles[index].classList.add('active');
-            // 如果之前有足迹，需要恢复显示
-            if (index > 0) {
-                setTimeout(() => {
-                    showFootprint(index - 1, index, true);
-                }, 100 * index);
-            }
         });
         
         // 禁用已收集的圆圈
@@ -1177,7 +1263,7 @@
         
         // 检查是否全部收集完成
         function checkAllCollected() {
-            if (activatedCircles.length === 4) {
+        if (activatedCircles.length === 4) {
                 circles.forEach(circle => {
                     circle.classList.add('disabled');
                     circle.style.pointerEvents = 'none';
@@ -1232,7 +1318,7 @@
                     showFootprint(activatedCircles[index - 1], index, false);
                 } else {
                     // 第一个圆圈直接显示字母
-                    setTimeout(() => {
+            setTimeout(() => {
                         this.classList.add('active');
                         this.classList.add('disabled');
                         this.style.pointerEvents = 'none';
@@ -1244,58 +1330,6 @@
             });
         });
         
-        function showFootprint(fromIndex, toIndex, skipAnimation) {
-            const fromCircle = circles[fromIndex];
-            const toCircle = circles[toIndex];
-            
-            // 获取两个圆圈的位置
-            const fromRect = fromCircle.getBoundingClientRect();
-            const containerRect = container.getBoundingClientRect();
-            const toRect = toCircle.getBoundingClientRect();
-            
-            const fromX = fromRect.left + fromRect.width / 2 - containerRect.left;
-            const fromY = fromRect.top + fromRect.height / 2 - containerRect.top;
-            const toX = toRect.left + toRect.width / 2 - containerRect.left;
-            const toY = toRect.top + toRect.height / 2 - containerRect.top;
-            
-            // 计算中间位置（圆框之间的中点）
-            const midX = (fromX + toX) / 2;
-            const midY = (fromY + toY) / 2;
-            
-            // 创建足迹元素，放在中间位置
-            const footprint = document.createElement('img');
-            footprint.src = "{{ url_for('static', filename='foot.svg') }}";
-            footprint.className = 'footprint';
-            footprint.style.left = (midX - 20) + 'px';
-            footprint.style.top = (midY - 20) + 'px';
-            container.appendChild(footprint);
-            
-            if (skipAnimation) {
-                // 直接显示足迹，不播放动画
-                footprint.classList.add('stay');
-            } else {
-                // 显示足迹出现动画
-                setTimeout(() => {
-                    footprint.classList.add('animate');
-                }, 50);
-                
-                // 动画完成后，足迹停留在中间位置
-                setTimeout(() => {
-                    footprint.classList.add('stay');
-                    footprint.classList.remove('animate');
-                }, 700);
-            }
-            
-            // 显示字母并禁用圆圈
-            setTimeout(() => {
-                toCircle.classList.add('active');
-                toCircle.classList.add('disabled');
-                toCircle.style.pointerEvents = 'none';
-                activatedCircles.push(toIndex);
-                saveStamps();
-                checkAllCollected();
-            }, skipAnimation ? 100 : 800);
-        }
         
         // 初始化时检查是否全部收集完成
         checkAllCollected();
