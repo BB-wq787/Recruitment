@@ -28,10 +28,7 @@
             position: relative;
         }
         .greeting-text {
-            position: absolute;
-            top: 1.5rem;
-            left: 50%;
-            transform: translateX(-50%);
+            position: relative;
             color: #B3002D;
             font-size: 1.8rem;
             font-weight: 800;
@@ -41,6 +38,7 @@
             padding: 0 1rem;
             max-width: 95%;
             line-height: 1.2;
+            margin-bottom: 2rem;
         }
         .circles-container {
             display: flex;
@@ -48,7 +46,7 @@
             flex-wrap: wrap;
             justify-content: center;
             align-items: flex-start;
-            margin-top: 3rem;
+            margin-top: 0;
             position: relative;
         }
         .stamp-item {
@@ -222,7 +220,7 @@
             }
             .circles-container {
                 gap: 2rem;
-                margin-top: 2.5rem;
+                margin-top: 1rem;
             }
             .stamp-label {
                 font-size: 0.8rem;
@@ -230,9 +228,9 @@
             }
             .greeting-text {
                 font-size: 1.3rem;
-                top: 1rem;
                 padding: 0 1rem;
                 max-width: 98%;
+                margin-bottom: 1.5rem;
             }
         }
 
@@ -1236,101 +1234,6 @@
             }, skipAnimation ? 100 : 800);
         }
 
-        // 初始化时检查是否全部收集完成
-        checkAllCollected();
-    </script>
-        let activatedCircles = {{ collected_stamps | tojson }};
-        const circles = document.querySelectorAll('.stamp-circle');
-        const container = document.getElementById('circlesContainer');
-        
-        // 禁用已收集的圆圈
-        function disableCollectedCircles() {
-            activatedCircles.forEach(index => {
-                circles[index].classList.add('disabled');
-                circles[index].style.pointerEvents = 'none';
-            });
-        }
-        
-        // 初始化：显示已收集的stamps
-        activatedCircles.forEach(index => {
-            circles[index].classList.add('active');
-        });
-        
-        // 禁用已收集的圆圈
-        setTimeout(() => {
-            disableCollectedCircles();
-        }, 500);
-        
-        // 检查是否全部收集完成
-        function checkAllCollected() {
-        if (activatedCircles.length === 4) {
-                circles.forEach(circle => {
-                    circle.classList.add('disabled');
-                    circle.style.pointerEvents = 'none';
-                });
-            }
-        }
-        
-        // 保存stamps到服务器
-        function saveStamps() {
-            fetch("{{ url_for('save_stamps') }}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ stamps: activatedCircles })
-            }).then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log('Stamps saved successfully');
-                }
-            })
-            .catch(error => {
-                console.error('Error saving stamps:', error);
-            });
-        }
-        
-        circles.forEach(circle => {
-            circle.addEventListener('click', function() {
-                // 如果已禁用（已收集），不响应点击
-                if (this.classList.contains('disabled')) {
-                    return;
-                }
-                
-                const index = parseInt(this.dataset.index);
-                const isActive = this.classList.contains('active');
-                
-                // 已激活的圆圈不能取消激活
-                if (isActive) {
-                    return;
-                }
-                
-                // 检查是否按顺序点击
-                const expectedIndex = activatedCircles.length;
-                
-                if (index !== expectedIndex) {
-                    // 不是按顺序点击，忽略
-                    return;
-                }
-                
-                // 按顺序点击，显示足迹动画
-                if (index > 0) {
-                    showFootprint(activatedCircles[index - 1], index, false);
-                } else {
-                    // 第一个圆圈直接显示字母
-            setTimeout(() => {
-                        this.classList.add('active');
-                        this.classList.add('disabled');
-                        this.style.pointerEvents = 'none';
-                        activatedCircles.push(index);
-                        saveStamps();
-                        checkAllCollected();
-                    }, 100);
-                }
-            });
-        });
-        
-        
         // 初始化时检查是否全部收集完成
         checkAllCollected();
     </script>
