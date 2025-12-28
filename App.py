@@ -85,25 +85,6 @@ def register():
 
     conn = get_db_connection()
     cur = conn.cursor()
-    # Prevent duplicate user name or email
-    cur.execute(
-        "SELECT name, email FROM users WHERE name = ? OR email = ?",
-        (name, email),
-    )
-    existing = cur.fetchone()
-    if existing:
-        # check which field conflicts
-        existing_name = existing["name"] if "name" in existing.keys() else None
-        existing_email = existing["email"] if "email" in existing.keys() else None
-        if existing_name == name:
-            flash("This user name is already taken. Please choose a different name.", "danger")
-        elif existing_email == email:
-            flash("This email is already registered. Please sign in or use another email.", "danger")
-        else:
-            flash("Account already exists. Please sign in.", "danger")
-        conn.close()
-        return redirect(url_for("index"))
-
     try:
         cur.execute(
             """
@@ -115,13 +96,11 @@ def register():
         conn.commit()
         flash("Account created. You can now sign in using your name or email.", "success")
     except sqlite3.IntegrityError:
-        # Fallback: unique constraint violated (email), inform user
         flash("This email is already registered. Please sign in or use another email.", "danger")
     finally:
         conn.close()
 
-    # Redirect back to index but skip the splash on redirect (only show splash on initial open)
-    return redirect(url_for("index") + "?no_splash=1#login")
+    return redirect(url_for("index") + "#login")
 
 
 @app.route("/login", methods=["POST"])
@@ -269,8 +248,7 @@ def reset_password():
     else:
         flash("Account not found. Please check the name or email.", "danger")
 
-    # After resetting password, go back to index but skip the splash
-    return redirect(url_for("index") + "?no_splash=1")
+    return redirect(url_for("index"))
 
 
 if __name__ == "__main__":
