@@ -63,7 +63,7 @@
             display:flex;
             align-items:center;
             justify-content:center;
-            font-size:24px;
+            font-size:32px;
         }
         /* 統一文字大小、單一行顯示 */
         .activity-text {
@@ -91,7 +91,7 @@
         }
         @media (max-width:768px){
             .activity-card{padding:16px;border-radius:28px}
-            .activity-icon{width:56px;height:56px;font-size:28px}
+            .activity-icon{width:56px;height:56px;font-size:36px}
         }
     </style>
 </head>
@@ -107,13 +107,13 @@
                     <div class="activity-text">Application Process</div>
                 </div>
             </a>
-            <a class="activity-card" href="#" aria-label="Workshop 1 Site Visit">
+            <a class="activity-card" href="#" aria-label="Workshop 1 Site Visit" data-bs-toggle="modal" data-bs-target="#posterModal" role="button">
                 <div class="activity-inner">
                     <div class="activity-icon">🏭</div>
                     <div class="activity-text">Workshop 1 Site Visit</div>
                 </div>
             </a>
-            <a class="activity-card" href="#" aria-label="Workshop 2 Game Day">
+            <a class="activity-card" href="#" aria-label="Workshop 2 Game Day" data-bs-toggle="modal" data-bs-target="#poster2Modal" role="button">
                 <div class="activity-inner">
                     <div class="activity-icon">👥</div>
                     <div class="activity-text">Workshop 2 Game Day</div>
@@ -151,6 +151,30 @@
             </div>
             <div class="modal-footer border-0" style="justify-content:center;">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Poster Modal for Workshop 1 -->
+<div class="modal fade" id="posterModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" style="background: #ffffff; border-radius:12px;">
+            <div class="modal-body text-center p-0" style="color:#0b1220;">
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 10;"></button>
+                <img src="{{ url_for('static', filename='海報2.png') }}" alt="Workshop 1 Poster" style="max-width: 100%; height: auto; border-radius: 8px;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Poster Modal for Workshop 2 -->
+<div class="modal fade" id="poster2Modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" style="background: #ffffff; border-radius:12px;">
+            <div class="modal-body text-center p-0" style="color:#0b1220;">
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 10;"></button>
+                <img src="{{ url_for('static', filename='海報3.png') }}" alt="Workshop 2 Poster" style="max-width: 100%; height: auto; border-radius: 8px;">
             </div>
         </div>
     </div>

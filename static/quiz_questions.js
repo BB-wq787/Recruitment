@@ -7,8 +7,8 @@
 
 const quizQuestions = [
     {
-        question: "How many fields does DKSH provide services in total?",
-        answer: "four"
+        question: "What is the storage area of HLC’s warehouse in square meters?",
+        answer: "34000"
     },
     {
         question: "In which year was DKSH founded?",
@@ -30,3 +30,5 @@ const quizQuestions = [
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = quizQuestions;
 }
+
+
