@@ -79,13 +79,25 @@ def register():
     phone = request.form.get("phone", "").strip()
     password = request.form.get("password", "").strip()
 
+    # 验证必填字段
     if not name or not email or not password:
         flash("Name, email, and password are required.", "danger")
+        return redirect(url_for("index"))
+
+    # 验证密码长度
+    if len(password) < 6:
+        flash("Password must be at least 6 characters long.", "danger")
         return redirect(url_for("index"))
 
     conn = get_db_connection()
     cur = conn.cursor()
     try:
+        # 检查用户名是否已存在
+        cur.execute("SELECT id FROM users WHERE name = ?", (name,))
+        if cur.fetchone():
+            flash("This username is already taken. Please choose a different username.", "danger")
+            return redirect(url_for("index"))
+
         cur.execute(
             """
             INSERT INTO users (name, email, phone, password)
