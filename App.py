@@ -309,6 +309,29 @@ def reset_password():
     return redirect(url_for("index"))
 
 
+@app.route("/admin/users")
+def admin_users():
+    # 检查是否为管理员（这里简单检查session中的用户名）
+    # 你可以修改这个逻辑来实现更安全的管理员验证
+    if not session.get("user_name") or session.get("user_name") not in ["admin", "cc"]:  # 替换为你的管理员用户名
+        flash("Access denied. Admin privileges required.", "danger")
+        return redirect(url_for("welcome"))
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    # 获取所有用户数据
+    if hasattr(conn, 'get_dsn_parameters'):  # PostgreSQL
+        cur.execute("SELECT id, name, email, phone, stamps FROM users ORDER BY id")
+    else:  # SQLite
+        cur.execute("SELECT id, name, email, phone, stamps FROM users ORDER BY id")
+
+    users = cur.fetchall()
+    conn.close()
+
+    return render_template("admin_users.html", users=users)
+
+
 # Railway会自动调用这个应用实例
 if __name__ == "__main__":
     init_db()
