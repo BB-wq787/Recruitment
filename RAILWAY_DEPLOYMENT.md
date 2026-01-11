@@ -226,6 +226,43 @@ https://your-app-name.up.railway.app
 2. 检查应用日志
 3. 联系 Railway 支持
 
+## 👨‍💼 管理员功能
+
+### 用户数据库管理
+
+部署后，你可以通过管理员面板查看所有注册用户：
+
+1. **使用管理员账户登录**
+   - 用户名：`admin` 或 `cc`（已在代码中预设）
+   - 如果需要修改管理员用户名，请编辑 `App.py` 中的 `admin_users` 路由
+
+2. **访问管理员面板**
+   - 登录后在欢迎页面会显示"Admin Panel"按钮
+   - 点击进入用户管理界面
+
+3. **查看用户数据**
+   - 用户ID、姓名、邮箱、电话号码
+   - 已收集的印章记录
+   - 用户总数统计
+
+### 数据库管理命令
+
+如果你需要在 Railway 中直接管理数据库：
+
+```bash
+# 查看数据库变量
+railway variables
+
+# 连接到数据库
+railway run psql $DATABASE_URL
+
+# 查看所有用户
+railway run psql $DATABASE_URL -c "SELECT * FROM users;"
+
+# 查看用户数量
+railway run psql $DATABASE_URL -c "SELECT COUNT(*) FROM users;"
+```
+
 ---
 
 **注意**: Railway 的免费额度每月刷新，适合长期运行的小型应用。
