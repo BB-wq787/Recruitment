@@ -108,6 +108,11 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(179, 0, 45, 0.2);
         }
+
+        /* Modal poster click effects */
+        .modal-body img:hover {
+            opacity: 0.9;
+        }
         @media (max-width:768px){
             .activity-card{padding:16px;border-radius:28px}
             .activity-icon{width:56px;height:56px;font-size:36px}
@@ -183,8 +188,7 @@
 <div class="modal fade" id="posterModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content" style="background: #ffffff; border-radius:12px;">
-            <div class="modal-body text-center p-0" style="color:#0b1220;">
-                <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 10;"></button>
+            <div class="modal-body text-center p-0" style="color:#0b1220; cursor: pointer;" data-bs-dismiss="modal">
                 <img src="{{ url_for('static', filename='海報2.png') }}" alt="Workshop 1 Poster" style="max-width: 100%; height: auto; border-radius: 8px;">
             </div>
         </div>
@@ -195,8 +199,7 @@
 <div class="modal fade" id="poster2Modal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content" style="background: #ffffff; border-radius:12px;">
-            <div class="modal-body text-center p-0" style="color:#0b1220;">
-                <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 10;"></button>
+            <div class="modal-body text-center p-0" style="color:#0b1220; cursor: pointer;" data-bs-dismiss="modal">
                 <img src="{{ url_for('static', filename='海報3.png') }}" alt="Workshop 2 Poster" style="max-width: 100%; height: auto; border-radius: 8px;">
             </div>
         </div>
