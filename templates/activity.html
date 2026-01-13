@@ -88,7 +88,7 @@
         }
         .activity-sub { display: none; }
         .back-btn {
-            display: block;
+            display: inline-block;
             margin: 2rem auto 0;
             padding: 0.75rem 1.5rem;
             background: rgba(255, 255, 255, 0.9);
@@ -153,8 +153,10 @@
                     <div class="activity-text">Instagram &amp; LinkedIn</div>
                 </div>
             </a>
+        </div>
+    <div style="text-align: center; margin-top: 3rem;">
+        <a href="{{ url_for('welcome') }}" class="back-btn">Back</a>
     </div>
-    <a href="{{ url_for('welcome') }}" class="back-btn">Back</a>
 </div>
 
 <!-- IG / LinkedIn Modal -->
