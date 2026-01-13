@@ -136,9 +136,9 @@ def register():
         flash("Name, email, and password are required.", "danger")
         return redirect(url_for("index"))
 
-    # 验证密码长度（必須為6位數）
-    if len(password) != 6:
-        flash("Password must be exactly 6 characters long.", "danger")
+    # 验证密码长度
+    if len(password) < 6:
+        flash("Password must be at least 6 characters long.", "danger")
         return redirect(url_for("index"))
 
     conn = get_db_connection()
@@ -344,9 +344,9 @@ def reset_password():
         flash("Please enter account, verification code, and new password.", "danger")
         return redirect(url_for("index"))
 
-    # 驗證密碼長度（必須為6位數）
-    if len(new_password) != 6:
-        flash("Password must be exactly 6 characters long.", "danger")
+    # 驗證密碼長度
+    if len(new_password) != 6 or not new_password.isdigit():
+        flash("Password must be exactly 6 digits.", "danger")
         return redirect(url_for("index"))
 
     # 檢查驗證碼
