@@ -239,13 +239,6 @@
                         <input type="text" name="account" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Verification Code (6 digits)</label>
-                        <input type="text" name="verification_code" class="form-control" required maxlength="6" pattern="[0-9]{6}" placeholder="Enter 6-digit code">
-                        <div class="form-text">
-                            <button type="button" id="sendCodeBtn" class="btn btn-link p-0" onclick="sendVerificationCode()">Send verification code</button>
-                        </div>
-                    </div>
-                    <div class="mb-3">
                         <label class="form-label">New Password</label>
                         <input type="password" name="new_password" class="form-control" required maxlength="6" pattern="[0-9]{6}" placeholder="Enter 6-digit password">
                         <div class="form-text">Password must be exactly 6 digits.</div>
@@ -294,57 +287,6 @@
         }, 3000);
     });
 
-    // 發送驗證碼功能
-    function sendVerificationCode() {
-        const accountInput = document.querySelector('input[name="account"]');
-        const account = accountInput.value.trim();
-
-        if (!account) {
-            alert('Please enter your account (name or email) first.');
-            accountInput.focus();
-            return;
-        }
-
-        const sendBtn = document.getElementById('sendCodeBtn');
-        sendBtn.disabled = true;
-        sendBtn.textContent = 'Sending...';
-
-        // 發送請求到後端生成驗證碼
-        fetch('/send_verification_code', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ account: account })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Verification code sent! Please check your account for the 6-digit code.');
-                // 開始倒計時 60 秒
-                let countdown = 60;
-                const countdownInterval = setInterval(() => {
-                    sendBtn.textContent = `Resend in ${countdown}s`;
-                    countdown--;
-                    if (countdown < 0) {
-                        clearInterval(countdownInterval);
-                        sendBtn.disabled = false;
-                        sendBtn.textContent = 'Send verification code';
-                    }
-                }, 1000);
-            } else {
-                alert('Error: ' + data.error);
-                sendBtn.disabled = false;
-                sendBtn.textContent = 'Send verification code';
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Failed to send verification code. Please try again.');
-            sendBtn.disabled = false;
-            sendBtn.textContent = 'Send verification code';
-        });
-    }
 </script>
 </body>
 </html>

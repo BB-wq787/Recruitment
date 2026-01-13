@@ -2,16 +2,12 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 import sqlite3
 import os
 import sys
-import random
-import string
 from datetime import datetime, timedelta
 from urllib.parse import urlparse
 
 app = Flask(__name__)
 app.secret_key = "change_this_to_a_secret_key"  # 用於 session 和 flash，正式環境請改成隨機值
 
-# 臨時存儲驗證碼（生產環境應使用 Redis 或數據庫）
-verification_codes = {}
 
 def get_db_connection():
     # 检查是否有PostgreSQL连接字符串
@@ -284,64 +280,15 @@ def logout():
     return redirect(url_for("index") + "?no_splash=1")
 
 
-@app.route("/send_verification_code", methods=["POST"])
-def send_verification_code():
-    try:
-        data = request.get_json()
-        account = data.get("account", "").strip()
-
-        if not account:
-            return jsonify({"success": False, "error": "Account is required"}), 400
-
-        # 檢查用戶是否存在
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute(
-            """
-            SELECT id FROM users
-            WHERE name = ? OR email = ?
-            """,
-            (account, account),
-        )
-        user = cur.fetchone()
-        conn.close()
-
-        if not user:
-            return jsonify({"success": False, "error": "Account not found"}), 404
-
-        # 生成6位數字驗證碼
-        verification_code = ''.join(random.choices(string.digits, k=6))
-
-        # 存儲驗證碼（5分鐘後過期）
-        verification_codes[account] = {
-            'code': verification_code,
-            'expires_at': datetime.now() + timedelta(minutes=5)
-        }
-
-        # 清理過期的驗證碼
-        current_time = datetime.now()
-        expired_accounts = [acc for acc, data in verification_codes.items() if data['expires_at'] < current_time]
-        for acc in expired_accounts:
-            del verification_codes[acc]
-
-        # 這裡可以集成SMS或email服務
-        # 當前先在控制台打印驗證碼（用於測試）
-        print(f"Verification code for {account}: {verification_code}")
-
-        return jsonify({"success": True, "message": "Verification code sent successfully"})
-
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
 
 
 @app.route("/reset_password", methods=["POST"])
 def reset_password():
     account = request.form.get("account", "").strip()  # 姓名或郵箱
-    verification_code = request.form.get("verification_code", "").strip()
     new_password = request.form.get("new_password", "").strip()
 
-    if not account or not verification_code or not new_password:
-        flash("Please enter account, verification code, and new password.", "danger")
+    if not account or not new_password:
+        flash("Please enter account and new password.", "danger")
         return redirect(url_for("index"))
 
     # 驗證密碼長度
@@ -349,22 +296,7 @@ def reset_password():
         flash("Password must be exactly 6 digits.", "danger")
         return redirect(url_for("index"))
 
-    # 檢查驗證碼
-    if account not in verification_codes:
-        flash("Please request a verification code first.", "danger")
-        return redirect(url_for("index"))
-
-    stored_data = verification_codes[account]
-    if datetime.now() > stored_data['expires_at']:
-        del verification_codes[account]
-        flash("Verification code has expired. Please request a new one.", "danger")
-        return redirect(url_for("index"))
-
-    if verification_code != stored_data['code']:
-        flash("Invalid verification code. Please try again.", "danger")
-        return redirect(url_for("index"))
-
-    # 驗證通過，更新密碼
+    # 更新密碼
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute(
@@ -378,10 +310,6 @@ def reset_password():
     conn.commit()
     updated = cur.rowcount
     conn.close()
-
-    # 清理已使用的驗證碼
-    if account in verification_codes:
-        del verification_codes[account]
 
     if updated:
         flash("Password has been reset. Please sign in with your new password.", "success")
