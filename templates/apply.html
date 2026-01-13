@@ -30,8 +30,6 @@
             opacity: 0.3;
             z-index: -1;
         }
-            color: #fff;
-        }
         .shell {
             max-width: 760px;
             margin: 0 auto;
@@ -113,7 +111,6 @@
         .timeline-item:nth-child(3) .timeline-content { background: linear-gradient(135deg, rgba(110,150,255,0.25), rgba(12,36,96,0.75)); }
         .timeline-item:nth-child(4) .timeline-content { background: linear-gradient(135deg, rgba(90,135,255,0.25), rgba(12,36,96,0.80)); }
         .timeline-item:nth-child(5) .timeline-content { background: linear-gradient(135deg, rgba(70,120,255,0.25), rgba(12,36,96,0.85)); }
-        .timeline-item:nth-child(6) .timeline-content { background: linear-gradient(135deg, rgba(50,105,255,0.25), rgba(12,36,96,0.90)); }
         .timeline-activity, .timeline-date { text-align: left; }
         .timeline-activity { font-weight:800; color:#fff; margin-bottom:6px; }
         .timeline-date { font-weight:700; color:#ffdede; font-size:0.95rem; }
@@ -184,7 +181,7 @@
                     <div class="timeline-number">1</div>
                     <div class="timeline-body">
                         <div class="timeline-activity">Application Deadline</div>
-                        <div class="timeline-date">31 Mar, 2026</div>
+                        <div class="timeline-date">27 Mar, 2026</div>
                     </div>
                 </div>
             </div>
@@ -192,8 +189,8 @@
                 <div class="timeline-content">
                     <div class="timeline-number">2</div>
                     <div class="timeline-body">
-                        <div class="timeline-activity">Workshop 1 — Site Visit</div>
-                        <div class="timeline-date">10 May, 2026</div>
+                        <div class="timeline-activity">Workshop 1</div>
+                        <div class="timeline-date">27 Feb, 2026</div>
                     </div>
                 </div>
             </div>
@@ -201,8 +198,8 @@
                 <div class="timeline-content">
                     <div class="timeline-number">3</div>
                     <div class="timeline-body">
-                        <div class="timeline-activity">Workshop 2 — Game Day</div>
-                        <div class="timeline-date">20 Jun, 2026</div>
+                        <div class="timeline-activity">Workshop 2</div>
+                        <div class="timeline-date">06 Mar, 2026</div>
                     </div>
                 </div>
             </div>
@@ -210,8 +207,8 @@
                 <div class="timeline-content">
                     <div class="timeline-number">4</div>
                     <div class="timeline-body">
-                        <div class="timeline-activity">Written Exam</div>
-                        <div class="timeline-date">15 Apr, 2026</div>
+                        <div class="timeline-activity">Meet & Match (Screening and Interview)</div>
+                        <div class="timeline-date">Apr - Jun, 2026</div>
                     </div>
                 </div>
             </div>
@@ -219,17 +216,8 @@
                 <div class="timeline-content">
                     <div class="timeline-number">5</div>
                     <div class="timeline-body">
-                        <div class="timeline-activity">Group Interview</div>
-                        <div class="timeline-date">25 Jul, 2026</div>
-                    </div>
-                </div>
-            </div>
-            <div class="timeline-item" role="listitem">
-                <div class="timeline-content">
-                    <div class="timeline-number">6</div>
-                    <div class="timeline-body">
-                        <div class="timeline-activity">Final Interview</div>
-                        <div class="timeline-date">05 Aug, 2026</div>
+                        <div class="timeline-activity">Starting the Adventure in DKSH</div>
+                        <div class="timeline-date">Jul, 2026</div>
                     </div>
                 </div>
             </div>
@@ -247,7 +235,7 @@
                     if (entry.isIntersecting) {
                         const el = entry.target;
                         const idx = contents.indexOf(el);
-                        setTimeout(() => el.classList.add('visible'), (idx % 6) * 80);
+                        setTimeout(() => el.classList.add('visible'), (idx % 5) * 80);
                     }
                 });
             }, { threshold: 0.12 });
